@@ -1,3 +1,84 @@
 #!/usr/bin/env python3
 # vxcli
 # Command line interface executable.
+
+######################
+# Imports & Globals
+######################
+
+import argparse
+import vxcli.command
+import os
+
+
+######################
+# Arguments
+######################
+
+PARSER = argparse.ArgumentParser(
+    prog = "vxcli",
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    description = """
+Command line interface for WindRiver Workbench / VxWorks.
+
+Following environment variables are required:
+  WIND_HOME\tpath to the folder that contains wrenv.sh
+    """,
+    add_help = False,
+)
+
+
+# Help
+# As some commands use '-h' for themselves, use only '--help' for help.
+PARSER.add_argument('--help',
+    action = "help",
+    default = argparse.SUPPRESS,
+    help = "show this help message and exit"
+)
+
+
+# Subcommands
+SUBPARSER = PARSER.add_subparsers(
+    dest = "_command",
+    metavar = "subcommand",
+)
+SUBPARSER.required = True
+
+for command in vxcli.command.__all__:
+    _c = SUBPARSER.add_parser(command,
+        add_help = False,
+        help = vxcli.command.__getattribute__(command).HELP,
+    )
+
+    _c.add_argument('--help',
+        action = "help",
+        default = argparse.SUPPRESS,
+        help = "show this help message and exit"
+    )
+
+    #_c._actions = vxcli.command.__getattribute__(command).PARSER._actions
+    vxcli.command.__getattribute__(command).init_parser(_c)
+
+
+######################
+# Environment variables
+######################
+
+os.environ["WIND_BASE"] = os.environ["WIND_HOME"] + "/vxworks/22.06"
+os.environ["WIND_VX7_HOST_TYPE"] = "x86_64-linux"
+os.environ["WRSD_LICENCE_FILE"] = os.environ["WIND_HOME"] + "/license"
+os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + ":" if "LD_LIBRARY_PATH" in os.environ else "") + os.environ["WRSD_LICENCE_FILE"] + "/lmapi-5/x86-linux2/lib"
+
+
+######################
+# Main
+######################
+
+if __name__ == '__main__':
+    args, unknown = PARSER.parse_known_args()
+
+    # Remove _command
+    kwargs = dict(args._get_kwargs())
+    del kwargs["_command"]
+
+    vxcli.command.__getattribute__(args._command).run(**kwargs, other_args = unknown)
