@@ -11,6 +11,7 @@ import sys
 import os
 import subprocess
 import threading
+import select
 
 
 ######################
@@ -40,11 +41,15 @@ class IPopen(object):
         writer.start()
 
         try:
-            while True:
-                d = sys.stdin.read(1)
-                if not d:
-                    break
-                self._write(p, d.encode())
+            while writer.is_alive():
+                # https://stackoverflow.com/questions/3471461/raw-input-and-timeout
+                ready, _, _ = select.select([sys.stdin], [], [], 1)
+
+                if ready:
+                    d = sys.stdin.read(1)
+                    if not d:
+                        break
+                    self._write(p, d.encode())
 
         except EOFError:
             pass
