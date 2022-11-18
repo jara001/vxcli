@@ -46,7 +46,8 @@ class IPopen(object):
                 ready, _, _ = select.select([sys.stdin], [], [], 1)
 
                 if ready:
-                    d = sys.stdin.read(1)
+                    #d = sys.stdin.read(1)
+                    d = sys.stdin.readline()
                     if not d:
                         break
                     self._write(p, d.encode())
