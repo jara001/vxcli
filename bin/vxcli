@@ -56,6 +56,7 @@ SUBPARSER.required = True
 
 for command in vxcli.command.__all__:
     _c = SUBPARSER.add_parser(command,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         add_help = False,
         help = vxcli.command.__getattribute__(command).HELP,
     )
