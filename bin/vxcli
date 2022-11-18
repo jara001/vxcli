@@ -12,6 +12,16 @@ import os
 
 
 ######################
+# Environment variables
+######################
+
+os.environ["WIND_BASE"] = os.environ["WIND_HOME"] + "/vxworks/22.06"
+os.environ["WIND_VX7_HOST_TYPE"] = "x86_64-linux"
+os.environ["WRSD_LICENCE_FILE"] = os.environ["WIND_HOME"] + "/license"
+os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + ":" if "LD_LIBRARY_PATH" in os.environ else "") + os.environ["WRSD_LICENCE_FILE"] + "/lmapi-5/x86-linux2/lib"
+
+
+######################
 # Arguments
 ######################
 
@@ -58,16 +68,6 @@ for command in vxcli.command.__all__:
 
     #_c._actions = vxcli.command.__getattribute__(command).PARSER._actions
     vxcli.command.__getattribute__(command).init_parser(_c)
-
-
-######################
-# Environment variables
-######################
-
-os.environ["WIND_BASE"] = os.environ["WIND_HOME"] + "/vxworks/22.06"
-os.environ["WIND_VX7_HOST_TYPE"] = "x86_64-linux"
-os.environ["WRSD_LICENCE_FILE"] = os.environ["WIND_HOME"] + "/license"
-os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + ":" if "LD_LIBRARY_PATH" in os.environ else "") + os.environ["WRSD_LICENCE_FILE"] + "/lmapi-5/x86-linux2/lib"
 
 
 ######################
