@@ -41,6 +41,12 @@ $ vxcli compile -g -rtp <source files> -static -o <outfile>
         default = os.environ.get("WIND_CC_SYSROOT", os.environ.get("WIND_BASE") + "/samples/prebuilt_projects/vsb_vxsim_linux"),
     )
 
+    subparser.add_argument("--zynq",
+        dest = "zynq",
+        help = "use vsb directory for the ZynQ (set to: os.environ[\"WIND_CC_SYSROOT_ZYNQ\"])",
+        action = "store_true",
+    )
+
     subparser.add_argument("files",
         nargs = "+",
         help = "source files to be compiled",
@@ -64,13 +70,20 @@ $ vxcli compile -g -rtp <source files> -static -o <outfile>
 # run
 ######################
 
-def run(files, dkm, rtp, vsb, other_args):
+def run(files, dkm, rtp, zynq, vsb, other_args):
 
     if dkm and rtp:
         print ("Unable to use two conflicting options '--dkm' and '--rtp'.", file = sys.stderr)
         exit (1)
 
-    os.environ["WIND_CC_SYSROOT"] = vsb
+    if zynq:
+        if "WIND_CC_SYSROOT_ZYNQ" in os.environ:
+            os.environ["WIND_CC_SYSROOT"] = os.environ.get("WIND_CC_SYSROOT_ZYNQ")
+        else:
+            print ("Unable to use alternative vsb as environment variable \"WIND_CC_SYSROOT_ZYNQ\" is not set.", file = sys.stderr)
+            exit (1)
+    else:
+        os.environ["WIND_CC_SYSROOT"] = vsb
 
     _ip = IPopen.IPopen()
 
