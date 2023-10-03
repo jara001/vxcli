@@ -14,8 +14,6 @@ from vxcli import IPopen
 # Global variables
 HELP = "Device debugger"
 
-os.environ["WIND_WB_HOSTTOOLS"] = os.environ["WIND_HOME"] + "/workbench-4/22.06/x86_64-linux2"
-
 
 ######################
 # Init Parser
@@ -55,9 +53,9 @@ def run(host, port, kernel, other_args):
     _ip = IPopen.IPopen()
 
     _ip.run([
-            os.environ["WIND_HOME"] + "/workbench-4/22.06/x86_64-linux2/bin/wrpython",
+            os.environ["WIND_WB_HOSTTOOLS"] + "/bin/wrpython",
             "-u",
-            os.environ["WIND_HOME"] + "/workbench-4/22.06/x86_64-linux2/lib/python/windriver/shells/WrDbg.py"
+            os.environ["WIND_WB_HOSTTOOLS"] + "/lib/python/windriver/shells/WrDbg.py"
         ]
         + [
             "--eval-command", "target connect vxworks7:%s:%d -kernel %s" % (host, port, kernel),

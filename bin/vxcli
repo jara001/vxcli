@@ -9,16 +9,39 @@
 import argparse
 import vxcli.command
 import os
+import sys
 
 
 ######################
 # Environment variables
 ######################
 
-os.environ["WIND_BASE"] = os.environ["WIND_HOME"] + "/vxworks/22.06"
-os.environ["WIND_VX7_HOST_TYPE"] = "x86_64-linux"
-os.environ["WRSD_LICENCE_FILE"] = os.environ["WIND_HOME"] + "/license"
-os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + ":" if "LD_LIBRARY_PATH" in os.environ else "") + os.environ["WRSD_LICENCE_FILE"] + "/lmapi-5/x86-linux2/lib"
+
+# We require following environment variables:
+REQUIRED_ENVVARS = [
+"WIND_HOME",            # Path to the folder with WindRiver (e.g., /opt/WindRiver)
+"WIND_BASE",            # Path to the folder with vxWorks distribution (e.g., $WIND_HOME/vxworks/$WIND_RELEASE_ID)
+"WIND_HOST_TYPE",       # Host type (e.g., x86-linux2)
+"WIND_VX7_HOST_TYPE",   # Host type for VxWorks 7 (e.g., x86_64-linux)
+"WRSD_LICENSE_FILE",    # Path to the folder with license file (e.g., $WIND_HOME/license)
+"LD_LIBRARY_PATH",      # Library path with lmapi-5
+"WIND_WB_HOSTTOOLS",    # Path to the folder with hosttools like wrpython (e.g., $WIND_HOME/workbench-4/$WIND_RELEASE_ID/x86_64-linux2)
+"WIND_RELEASE_ID",      # Current version of VxWorks (e.g., 23.09)
+]
+
+#os.environ["WIND_RELEASE_ID"] = "22.06"
+#os.environ["WIND_BASE"] = os.environ["WIND_HOME"] + "/vxworks/" + os.environ["WIND_RELEASE_ID"]
+#os.environ["WIND_HOST_TYPE"] = "x86-linux2"
+#os.environ["WIND_VX7_HOST_TYPE"] = "x86_64-linux"
+#os.environ["WRSD_LICENSE_FILE"] = os.environ["WIND_HOME"] + "/license"
+#os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + ":" if "LD_LIBRARY_PATH" in os.environ else "") + os.environ["WRSD_LICENSE_FILE"] + "/lmapi-5/x86-linux2/lib"
+#os.environ["WIND_WB_HOSTTOOLS"] = os.environ["WIND_HOME"] + "/workbench-4/" + os.environ["WIND_RELEASE_ID"] + "/x86_64-linux2"
+
+
+for key in REQUIRED_ENVVARS:
+    if key not in os.environ:
+        sys.stderr.write("Current environment lacks variable '%s'. Run 'wrenv.linux' from the WindRiver folder first.\n" % key)
+        exit(1)
 
 
 ######################

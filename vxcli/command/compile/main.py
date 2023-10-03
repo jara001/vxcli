@@ -88,7 +88,7 @@ def run(files, dkm, rtp, zynq, vsb, other_args):
     _ip = IPopen.IPopen()
 
     _ip.run([
-            os.environ["WIND_BASE"] + "/host/x86_64-linux/bin/wr-cc",
+            os.environ["WIND_BASE"] + "/host/" + os.environ["WIND_VX7_HOST_TYPE"] + "/bin/wr-cc",
         ]
         + (DKM_FLAGS if dkm else [])
         + (RTP_FLAGS if rtp else [])

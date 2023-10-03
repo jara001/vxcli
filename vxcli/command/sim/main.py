@@ -47,7 +47,7 @@ def run(device, file, other_args):
     _ip = IPopen.IPopen()
 
     _ip.run([
-            os.environ["WIND_HOME"] + "/vxworks/22.06/host/x86-linux2/bin/vxsim-64",
+            os.environ["WIND_HOME"] + "/vxworks/" + os.environ["WIND_RELEASE_ID"] + "/host/" + os.environ["WIND_HOST_TYPE"] + "/bin/vxsim-64",
         ]
         + ["-f", file]
         + ["-d", device]
