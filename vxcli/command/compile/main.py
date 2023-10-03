@@ -38,7 +38,8 @@ $ vxcli compile -g -rtp <source files> -static -o <outfile>
         dest = "vsb",
         help = "Path to the VxWorks Source Build used for the compiation (default: vsb_vxsim_linux or os.environ[\"WIND_CC_SYSROOT\"] if set)",
         type = str,
-        default = os.environ.get("WIND_CC_SYSROOT", os.environ.get("WIND_BASE") + "/samples/prebuilt_projects/vsb_vxsim_linux"),
+        default = os.environ.get("WIND_CC_SYSROOT", os.environ.get("WIND_BASE", "") + "/samples/prebuilt_projects/vsb_vxsim_linux"),
+        # Yes, we kinda lie here, if $WIND_BASE is not set.
     )
 
     subparser.add_argument("--zynq",

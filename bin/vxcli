@@ -39,12 +39,6 @@ REQUIRED_ENVVARS = [
 #os.environ["WIND_WB_HOSTTOOLS"] = os.environ["WIND_HOME"] + "/workbench-4/" + os.environ["WIND_RELEASE_ID"] + "/x86_64-linux2"
 
 
-for var in REQUIRED_ENVVARS:
-    if var[0] not in os.environ:
-        sys.stderr.write("Current environment lacks variable '%s'. Run 'wrenv.linux' from the WindRiver folder first.\n" % var[0])
-        exit(1)
-
-
 ######################
 # Arguments
 ######################
@@ -100,6 +94,14 @@ for command in vxcli.command.__all__:
 
 if __name__ == '__main__':
     args, unknown = PARSER.parse_known_args()
+
+
+    # Check for required environment variables
+    for var in REQUIRED_ENVVARS:
+        if var[0] not in os.environ:
+            sys.stderr.write("Current environment lacks variable '%s'. Run 'wrenv.linux' from the WindRiver folder first.\n" % var[0])
+            exit(1)
+
 
     # Remove _command
     kwargs = dict(args._get_kwargs())
