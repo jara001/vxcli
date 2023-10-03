@@ -9,6 +9,7 @@
 import argparse
 import subprocess
 import os
+import sys
 from vxcli import IPopen
 
 # Global variables
@@ -51,6 +52,9 @@ def init_parser(subparser):
 
 def run(host, port, kernel, other_args):
     _ip = IPopen.IPopen()
+
+    if port == 1534:
+        sys.stderr.write("WARNING: Using default port '1534'. This won't work for the simulator as you have to specify the remapped port.\n")
 
     _ip.run([
             os.environ["WIND_WB_HOSTTOOLS"] + "/bin/wrpython",
