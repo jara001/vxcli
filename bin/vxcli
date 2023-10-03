@@ -27,6 +27,7 @@ REQUIRED_ENVVARS = [
     ("LD_LIBRARY_PATH",     "library path extended with lmapi-5"),
     ("WIND_WB_HOSTTOOLS",   "path to the folder with hosttools like wrpython (e.g., $WIND_HOME/workbench-4/$WIND_RELEASE_ID/x86_64-linux2)"),
     ("WIND_RELEASE_ID",     "current version of VxWorks (e.g., 23.09)"),
+    ("WIND_WRWB_PATH",      "path to the folder that contains wrwb (e.g., $WIND_HOME/workbench-4/eclipse/x86_64-linux2"),
 ]
 
 #os.environ["WIND_RELEASE_ID"] = "22.06"
