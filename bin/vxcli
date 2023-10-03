@@ -19,14 +19,14 @@ import sys
 
 # We require following environment variables:
 REQUIRED_ENVVARS = [
-"WIND_HOME",            # Path to the folder with WindRiver (e.g., /opt/WindRiver)
-"WIND_BASE",            # Path to the folder with vxWorks distribution (e.g., $WIND_HOME/vxworks/$WIND_RELEASE_ID)
-"WIND_HOST_TYPE",       # Host type (e.g., x86-linux2)
-"WIND_VX7_HOST_TYPE",   # Host type for VxWorks 7 (e.g., x86_64-linux)
-"WRSD_LICENSE_FILE",    # Path to the folder with license file (e.g., $WIND_HOME/license)
-"LD_LIBRARY_PATH",      # Library path with lmapi-5
-"WIND_WB_HOSTTOOLS",    # Path to the folder with hosttools like wrpython (e.g., $WIND_HOME/workbench-4/$WIND_RELEASE_ID/x86_64-linux2)
-"WIND_RELEASE_ID",      # Current version of VxWorks (e.g., 23.09)
+    ("WIND_HOME",           "path to the folder that contains wrenv.sh (e.g., /opt/WindRiver)"),
+    ("WIND_BASE",           "path to the folder with vxWorks distribution (e.g., $WIND_HOME/vxworks/$WIND_RELEASE_ID)"),
+    ("WIND_HOST_TYPE",      "host type (e.g., x86-linux2)"),
+    ("WIND_VX7_HOST_TYPE",  "host type for VxWorks 7 (e.g., x86_64-linux)"),
+    ("WRSD_LICENSE_FILE",   "path to the folder with license file (e.g., $WIND_HOME/license)"),
+    ("LD_LIBRARY_PATH",     "library path extended with lmapi-5"),
+    ("WIND_WB_HOSTTOOLS",   "path to the folder with hosttools like wrpython (e.g., $WIND_HOME/workbench-4/$WIND_RELEASE_ID/x86_64-linux2)"),
+    ("WIND_RELEASE_ID",     "current version of VxWorks (e.g., 23.09)"),
 ]
 
 #os.environ["WIND_RELEASE_ID"] = "22.06"
@@ -38,9 +38,9 @@ REQUIRED_ENVVARS = [
 #os.environ["WIND_WB_HOSTTOOLS"] = os.environ["WIND_HOME"] + "/workbench-4/" + os.environ["WIND_RELEASE_ID"] + "/x86_64-linux2"
 
 
-for key in REQUIRED_ENVVARS:
-    if key not in os.environ:
-        sys.stderr.write("Current environment lacks variable '%s'. Run 'wrenv.linux' from the WindRiver folder first.\n" % key)
+for var in REQUIRED_ENVVARS:
+    if var[0] not in os.environ:
+        sys.stderr.write("Current environment lacks variable '%s'. Run 'wrenv.linux' from the WindRiver folder first.\n" % var[0])
         exit(1)
 
 
@@ -55,8 +55,7 @@ PARSER = argparse.ArgumentParser(
 Command line interface for WindRiver Workbench / VxWorks.
 
 Following environment variables are required:
-  WIND_HOME\tpath to the folder that contains wrenv.sh
-    """,
+""" + "\n".join(" %-15s\t%s" % (var[0], var[1]) for var in REQUIRED_ENVVARS),
     add_help = False,
 )
 
