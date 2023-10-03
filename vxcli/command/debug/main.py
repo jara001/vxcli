@@ -23,17 +23,17 @@ def init_parser(subparser):
     subparser.add_argument("--host",
         metavar = "<hostname>",
         dest = "host",
-        help = "IP address or hostname of the target device (default: localhost)",
+        help = "IP address or hostname of the target device (default: localhost or os.environ[\"TARGET_HOST\"] is set)",
         type = str,
-        default = "localhost",
+        default = os.environ.get("TARGET_HOST", "localhost"),
     )
 
     subparser.add_argument("--port",
         metavar = "<port>",
         dest = "port",
-        help = "port used for communication with the device (default: 1534)",
+        help = "port used for communication with the device (default: 1534 or os.environ[\"TARGET_PORT\"] is set)",
         type = int,
-        default = 1534,
+        default = os.environ.get("TARGET_PORT", 1534),
     )
 
     subparser.add_argument("--kernel",
